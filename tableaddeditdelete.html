@@ -1,0 +1,129 @@
+<html>
+<head>
+<title>jquery examples</title>
+<style>
+table,th,tr,td{
+	border:1px solid black;
+}
+</style>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+</head>
+<body>
+<form id="userForm" class="form-horizontal" style="display:none;" >
+	<div class="form-group">
+	<label for="Fname">First Name:</label>
+		<input type="text" name="Fname" id="fname" class="form-control" value="" placeholder="Enter First name"/>
+	</div>
+	<div class="form-group">
+		<label for="Lname">Last Name:</label>
+		<input type="text" name="Lname" id="lname" class="form-control" value="" placeholder="Enter Last name"/>
+	</div>
+	<div class="form-group">
+		<label for="salary">Salary:</label>
+		<input type="number" name="salary" id="salary" class="form-control" value="" placeholder="Enter Salary"/>
+	</div>
+	<input type="button" id="save" class="btn btn-default pull-left" value="Submit" style="margin-bottom:1%"/>
+</form>
+
+<div class="container">
+    <div class="row clearfix">
+		<button id="addUser" class="btn btn-default pull-left" style="margin-bottom:1%">Add</button>
+		<button id="editUser" class="btn btn-default pull-left" style="margin-bottom:1%">Edit</button>
+		<button id="deleteUser" class="btn btn-default pull-left" style="margin-bottom:1%">Delete</button>
+		<div class="col-md-12 column">
+			<table class="table table-bordered table-hover" id="tab_logic">
+				<thead>
+					<tr>
+						<th></th>
+						<th class="text-center">#</th>
+						<th class="text-center">FName</th>
+						<th class="text-center">LName</th>
+						<th class="text-center">Salary</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr id='addr0'>
+						<td class="text-center"><input type="radio" class="radio-btn" name="radio-btn"/></td>
+						<td>1</td>
+						<td>Madhavi</td>
+						<td>M</td>
+						<td>5000</td>
+					</tr>
+                    <tr id='addr1'></tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	
+</div>
+
+<script>
+   $(document).ready(function(e){
+		  var i=1;
+		  var add;
+		  var data = [];
+		  var delteData = [];
+			$('#addUser').click(function(){
+				add = true;
+				$('#userForm').css("display","block");
+			});
+			
+			$('input[name="radio-btn"]').click(function(){
+			if($('input[name="radio-btn"]').is(':checked')){
+				$('#editUser').click(function(){
+				data = [];
+				 $('input:checked').each(function () {
+					var checked = $(this).closest("tr").find("td:not(:has(input))");
+					$.each(checked, function () {
+						data.push($(this).text());
+					});
+				});
+				$('#userForm').css("display","block");
+				j=data[0]-1;
+				$('#fname').val(data[1]);
+				$('#lname').val(data[2]);
+				$('#salary').val(data[3]);
+				add = false;
+			});
+			
+			$('#deleteUser').click(function(){
+				delteData =[];
+				$('input:checked').each(function () {
+					var checked = $(this).closest("tr").find("td:not(:has(input))");
+					$.each(checked, function () {
+						delteData.push($(this).text());
+					});
+				});
+				k = delteData[0]-1;
+				if(k>1){
+				 $("#addr"+(k-1)).html('');
+				 k--;
+				 }
+			});
+			}
+			});
+			
+			$("#save").click(function(){
+				
+				var fname = $('#fname').val();
+				var lname = $('#lname').val();
+				var salary = $('#salary').val();
+				if(add == true)
+				{
+					$('#addr'+i).html("<td class='text-center'><input type='radio' class='radio-btn' name='radio-btn'/></td>"+"<td>"+ (i+1) +"</td>"+"<td>"+fname+"</td>"+"<td>"+lname+"</td>"+"<td>"+salary+"</td>");
+					$('#tab_logic').append('<tr id="addr'+(i+1)+'"></tr>');
+					i++; 
+				}
+				else{
+					$('#addr'+j).html("<td class='text-center'><input type='radio' class='radio-btn' name='radio-btn'/></td>"+"<td>"+ (j) +"</td>"+"<td>"+fname+"</td>"+"<td>"+lname+"</td>"+"<td>"+salary+"</td>");
+					$('#tab_logic').append('<tr id="addr'+(j+1)+'"></tr>');
+				}
+				$('#fname,#lname,#salary').val("");
+				//$('#userForm').css("display","none");
+			});
+		
+	});
+</script>
+ 
+</body>
+</html>
